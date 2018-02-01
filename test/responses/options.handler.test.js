@@ -9,7 +9,7 @@ describe('option handler', () => {
       apiDoc: './test/responses/api',
       plugins: {
         responses: responses({
-          handler: (ctx, next, { response, errors }) => {
+          handler: (ctx, { response, errors }) => {
             ctx.response.body = response;
           },
         }),
