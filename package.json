@@ -27,7 +27,7 @@
     "lodash.isplainobject": "^4.0.6"
   },
   "peerDependencies": {
-    "koa-oai-router": "^2.0.0-alpha.2 || ^2.0.0"
+    "koa-oai-router": "^2.0.0-alpha.4 || ^2.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
