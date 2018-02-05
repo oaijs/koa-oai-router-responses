@@ -7,10 +7,10 @@ describe('responses default', () => {
   it('response is valid, should ok', async () => {
     const { request } = await init({
       apiDoc: './test/responses/api',
-      plugins: {
-        responses: responses(),
-        middleware: middleware(),
-      },
+      plugins: [
+        responses,
+        middleware,
+      ],
       options: {
         middleware: './test/responses/controllers',
       },
@@ -24,10 +24,10 @@ describe('responses default', () => {
   it('response is invalid, should error', async () => {
     const { request } = await init({
       apiDoc: './test/responses/api',
-      plugins: {
-        responses: responses(),
-        middleware: middleware(),
-      },
+      plugins: [
+        responses,
+        middleware,
+      ],
       options: {
         middleware: './test/responses/controllers',
       },
@@ -45,10 +45,10 @@ describe('responses default', () => {
   it('response is throw error, should error', async () => {
     const { request } = await init({
       apiDoc: './test/responses/api',
-      plugins: {
-        responses: responses(),
-        middleware: middleware(),
-      },
+      plugins: [
+        responses,
+        middleware,
+      ],
       options: {
         middleware: './test/responses/controllers',
       },
@@ -66,10 +66,10 @@ describe('responses default', () => {
   it('response status code not found, use default schema, should ok', async () => {
     const { request } = await init({
       apiDoc: './test/responses/api',
-      plugins: {
-        responses: responses(),
-        middleware: middleware(),
-      },
+      plugins: [
+        responses,
+        middleware,
+      ],
       options: {
         middleware: './test/responses/controllers',
       },
@@ -83,10 +83,10 @@ describe('responses default', () => {
   it('response model have not `schema` object, should ok', async () => {
     const { request } = await init({
       apiDoc: './test/responses/api',
-      plugins: {
-        responses: responses(),
-        middleware: middleware(),
-      },
+      plugins: [
+        responses,
+        middleware,
+      ],
       options: {
         middleware: './test/responses/controllers',
       },

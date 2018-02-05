@@ -7,16 +7,17 @@ describe('option handler', () => {
   it('handler is custom function, should success', async () => {
     const { request } = await init({
       apiDoc: './test/responses/api',
-      plugins: {
-        responses: responses({
+      plugins: [
+        responses,
+        middleware,
+      ],
+      options: {
+        middleware: './test/responses/controllers',
+        responses: {
           handler: (ctx, { response, errors }) => {
             ctx.response.body = response;
           },
-        }),
-        middleware: middleware(),
-      },
-      options: {
-        middleware: './test/responses/controllers',
+        },
       },
     });
 

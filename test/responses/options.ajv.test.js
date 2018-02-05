@@ -7,16 +7,17 @@ describe('option ajv', () => {
   it('ajv is function, should success', async () => {
     const { request } = await init({
       apiDoc: './test/responses/api',
-      plugins: {
-        responses: responses({
+      plugins: [
+        responses,
+        middleware,
+      ],
+      options: {
+        middleware: './test/responses/controllers',
+        responses: {
           ajv: (Ajv) => {
             return new Ajv();
           },
-        }),
-        middleware: middleware(),
-      },
-      options: {
-        middleware: './test/responses/controllers',
+        },
       },
     });
 
@@ -28,14 +29,15 @@ describe('option ajv', () => {
   it('ajv is object, should success', async () => {
     const { request } = await init({
       apiDoc: './test/responses/api',
-      plugins: {
-        responses: responses({
-          ajv: { logger: true },
-        }),
-        middleware: middleware(),
-      },
+      plugins: [
+        responses,
+        middleware,
+      ],
       options: {
         middleware: './test/responses/controllers',
+        responses: {
+          ajv: { logger: true },
+        },
       },
     });
 
