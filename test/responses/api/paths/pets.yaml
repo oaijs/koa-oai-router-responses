@@ -161,3 +161,33 @@
     responses:
       default:
         description: "unexpected error"
+
+/pets-unexpected:
+  get:
+    description: "Returns all pets from the system that the user has access to"
+    operationId: "findPets"
+    produces:
+      - "application/json"
+    tags:
+      - pets
+    parameters:
+      - name: "tags"
+        in: "query"
+        description: "tags to filter by"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "csv"
+      - name: "limit"
+        in: "query"
+        description: "maximum number of results to return"
+        required: false
+        type: "integer"
+        format: "int32"
+    x-oai-middleware:
+      - file: pets
+        handler: uncatchedError
+    responses:
+      default:
+        description: "unexpected error"

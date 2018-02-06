@@ -9,9 +9,15 @@ async function track(ctx, next) {
   try {
     await next();
 
-    ctx.oaiTmp = ctx.response.body;
+    ctx.oaistack = {
+      catched: false,
+      data: ctx.response.body,
+    };
   } catch (error) {
-    ctx.oaiTmp = error;
+    ctx.oaistack = {
+      catched: true,
+      data: error,
+    };
 
     // since we handled this manually we'll want to delegate to the regular app
     // level error handling as well so that centralized still functions correctly.
@@ -35,7 +41,9 @@ class ResponsePlugin extends Plugin {
 
   async handler(docOpts) {
     const {
-      handler = defaultHandler,
+      enable = true,
+      before = () => { },
+      after = defaultHandler,
       ajv,
     } = this.args || {};
     const { fieldValue } = docOpts;
@@ -44,17 +52,21 @@ class ResponsePlugin extends Plugin {
     return compose([async (ctx, next) => {
       await next();
 
-      const response = ctx.oaiTmp;
-      delete ctx.oaiTmp;
+      const { catched, data } = ctx.oaistack;
+      delete ctx.oaistack;
 
-      const validate = getValidate(ctx.response.status, fieldValidators);
-      const validRet = validate(response);
-      const errors = validate.errors;
+      let validRet = true;
+      let validErrs = [];
 
-      // valid success, go next;
-      if (!validRet) {
-        handler(ctx, Object.assign({}, docOpts, { response, errors }));
+      await before(ctx, Object.assign({}, docOpts, { catched, data }, { validRet, validErrs }));
+
+      if (enable) {
+        const validate = getValidate(ctx.response.status, fieldValidators);
+        validRet = validate(data);
+        validErrs = validate.errors;
       }
+
+      await after(ctx, Object.assign({}, docOpts, { catched, data }, { validRet, validErrs }));
     }, track]);
   }
 }

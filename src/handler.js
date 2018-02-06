@@ -8,16 +8,13 @@
  * @param {object} param2.fieldValue
  * @param {string} param2.operation
  * @param {object} param2.operationValue
- * @param {object} param2.response error or response body
- * @param {object} param2.errors
+ * @param {object} param2.data error or response body
  */
-function responseHandler(ctx, { response, errors }) {
-  ctx.response.status = 500;
-  ctx.response.body = {
-    message: 'Response body invalid, please check the api doc.',
-    errors,
-    response,
-  };
+function responseHandler(ctx, { catched, data }) {
+  if (catched) {
+    ctx.response.status = data.status || 500;
+    ctx.response.body = data;
+  }
 }
 
 module.exports = responseHandler;

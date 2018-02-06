@@ -48,30 +48,22 @@ npm i koa-oai-router-responses --save
 |name|`string`|`responses`|
 |evoked fields|`string`| `responses`|
 |evoked value|`object`| [OpenApi responses object][resp]|
-|options|`object`| `ajv`, `handler` |
+|options|`object`| `ajv`, `before`, `after` |
 
 * `options` `{object}`
-  * `ajv` `{object|function}` `object` options of [Ajv][ajv]. `function` is a factory with arguments `(Ajv)` and must return a ajv instance.
-  * `handler` `{function}` Response handler when validate fail. Having arguments `(ctx, {response, errors, endpoint, field, fieldValue, operation, operationValue})`. Default handler response e.g.
-    ```js
-    {
-      // response valid fail info.
-      "message": "",
-      // detail errors.
-      "errors": [{
-        "keyword":"type",
-        "dataPath":".size",
-        "schemaPath":"#/properties/size/type",
-        "params":{
-          "type":"number"
-          },
-          "message":"should be number"
-      }],
-      // the original response body
-      "response": {}
-    }
-
-    ```
+  * `enable` `{boolean}` Enable or disable ajv validator.
+  * `ajv` `{object|function}` `object` Options of [Ajv][ajv]. `function` is a factory with arguments `(Ajv)` and must return a ajv instance.
+  * `before` `{function}` Before validte. Having arguments `(ctx, {catched, data, validRet, validErrs, endpoint, field, fieldValue, operation, operationValue})`.
+    * `catched` `{boolean}` unexpected error.
+    * `data` `{any}` response body or error.
+    * `validRet` `{boolean}` valid result.
+    * `validErrs` `{[object]}` valid errors.
+    * `endpoint` `{string}`
+    * `field` `{string}`
+    * `fieldValue` `{object}`
+    * `operation` `{string}`
+    * `operationValue` `{object}`
+  * `after` `{function}` After validte.
 
 ---
 

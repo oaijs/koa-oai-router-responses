@@ -22,9 +22,14 @@ async function addPet(ctx, next) {
   ctx.throw(401, 'Not login');
 }
 
+async function uncatchedError(ctx, next) {
+  a.a = 123;
+}
+
 module.exports = {
   findPets,
   findPetsOk,
   findPetsDefault,
   addPet,
+  uncatchedError,
 };

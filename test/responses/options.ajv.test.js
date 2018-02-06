@@ -23,7 +23,7 @@ describe('option ajv', () => {
 
     await request
       .get('/api/pets')
-      .expect(500);
+      .expect(200);
   });
 
   it('ajv is object, should success', async () => {
@@ -43,6 +43,6 @@ describe('option ajv', () => {
 
     await request
       .get('/api/pets')
-      .expect(500);
+      .expect(200);
   });
 });

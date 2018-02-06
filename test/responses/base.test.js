@@ -21,7 +21,7 @@ describe('responses default', () => {
       .expect(200);
   });
 
-  it('response is invalid, should error', async () => {
+  it('response unexpected, should 500', async () => {
     const { request } = await init({
       apiDoc: './test/responses/api',
       plugins: [
@@ -33,34 +33,9 @@ describe('responses default', () => {
       },
     });
 
-    const ret = await request
-      .get('/api/pets')
+    await request
+      .get('/api/pets-unexpected')
       .expect(500);
-
-    expect(ret.body).toHaveProperty('message');
-    expect(ret.body).toHaveProperty('errors');
-    expect(ret.body).toHaveProperty('response');
-  });
-
-  it('response is throw error, should error', async () => {
-    const { request } = await init({
-      apiDoc: './test/responses/api',
-      plugins: [
-        responses,
-        middleware,
-      ],
-      options: {
-        middleware: './test/responses/controllers',
-      },
-    });
-
-    const ret = await request
-      .post('/api/pets')
-      .expect(500);
-
-    expect(ret.body).toHaveProperty('message');
-    expect(ret.body).toHaveProperty('errors');
-    expect(ret.body).toHaveProperty('response');
   });
 
   it('response status code not found, use default schema, should ok', async () => {

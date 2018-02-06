@@ -3,8 +3,10 @@ const middleware = require('koa-oai-router-middleware');
 const { init } = require('../helpers');
 const responses = require('../..');
 
-describe('option handler', () => {
-  it('handler is custom function, should success', async () => {
+describe('option enable', () => {
+  it('enable is false, should success', async () => {
+    let valid = false;
+
     const { request } = await init({
       apiDoc: './test/responses/api',
       plugins: [
@@ -14,8 +16,10 @@ describe('option handler', () => {
       options: {
         middleware: './test/responses/controllers',
         responses: {
-          handler: (ctx, { response, errors }) => {
-            ctx.response.body = response;
+          enable: false,
+          after: (ctx, { validRet, validErrs, data }) => {
+            ctx.response.body = data;
+            valid = validRet;
           },
         },
       },
@@ -24,5 +28,7 @@ describe('option handler', () => {
     await request
       .get('/api/pets')
       .expect(200);
+
+    expect(valid).toBe(true);
   });
 });
