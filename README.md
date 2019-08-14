@@ -79,8 +79,8 @@ const router = new Router({
   apiDoc: './api',
 });
 
-router.mount(middlewareLoader('./controllers'));
 router.mount(responsesHandler());
+router.mount(middlewareLoader('./controllers'));
 
 app.use(bodyParser());
 app.use(router.routes());
